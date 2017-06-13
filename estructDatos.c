@@ -6,34 +6,44 @@ struct nodo_t* nuevoNodo(void){ // esto sería como una especie de constructor
     return nodo;
 }
 
-struct pila_t *Pila(void){
+struct pila_t* nuevaPila(void){
     struct pila_t *p = (struct pila_t*)malloc(sizeof(struct pila_t));
+    p->lista = nuevaLista();
     p->elementos = 0;
     return p;
 }
 
-void push(struct pila_t *p, const int dato){
-    struct nodo_t* aux = nuevoNodo();
-    aux->dato = dato;
-    insertarFinal(p->lista->cabeza, aux);
+void pushS(struct pila_t *p, const int dato){
+    insertarPrincipio(p->lista, dato);
+    
     p->elementos++;
 }
 
-void  insertarFinal(struct nodo_t *nodo, struct nodo_t *aux){
+struct nodo_t* obtenerFinal(struct nodo_t *nodo){
+    /* Recursivo */
+    /*
     if(nodo->siguiente)
-    	insertarFinal(nodo->siguiente, aux);
+    	return obtenerFinal(nodo->siguiente);
     else
-	    nodo->siguiente = aux;
+        return nodo;
+    */
+    /* Iterativo */
+    struct nodo_t *aux = nodo;
+    
+    while(aux->siguiente)
+        aux = aux->siguiente;
+    
+    return aux;
 }
 
-void pop(struct pila_t *p){
+void popS(struct pila_t *p){
     if(p->elementos >= 1){
         eliminaCabeza(p->lista);
         p->elementos--;
     }
 }
 
-int front(struct pila_t *pila){
+int frontS(struct pila_t *pila){
     if(pila->elementos >= 1){
         return pila->lista->cabeza->dato;
     }
@@ -42,6 +52,8 @@ int front(struct pila_t *pila){
 void limpiarPila(struct pila_t *pila){
     pila->elementos = 0;
     limpiarLista(pila->lista);
+    free(pila->lista);
+    pila->lista = NULL;
 }
 
 void eliminaCabeza(struct sll_t *lista){
@@ -53,7 +65,7 @@ void eliminaCabeza(struct sll_t *lista){
     }
 }
 
-struct sll_t* Sll_t(void){
+struct sll_t* nuevaLista(void){
     struct sll_t *lista = (struct sll_t*)malloc(sizeof(struct sll_t));
     lista->elementos = 0;
     return lista;
@@ -124,13 +136,24 @@ void limpiarLista(struct sll_t *lista){
     }
 }
 
-void insertar(struct sll_t *lista, int dato){
+void insertarFinal(struct sll_t *lista, int dato){
+    struct nodo_t *aux = nuevoNodo();
+    aux->dato = dato;
+    if(lista->cabeza){
+        struct nodo_t *fin = obtenerFinal(lista->cabeza);
+        fin->siguiente = aux;
+    }else
+        lista->cabeza = aux;
+    lista->elementos++;
+}
+
+void insertarPrincipio(struct sll_t* lista, int dato){
     struct nodo_t *aux = nuevoNodo();
     aux->dato = dato;
     if(lista->cabeza)
-        insertarFinal(lista->cabeza, aux);
-    else
-        lista->cabeza = aux;
+        aux->siguiente = lista->cabeza;
+        
+    lista->cabeza = aux;
     lista->elementos++;
 }
 
@@ -174,4 +197,45 @@ struct arbolC_t* Arbol(int elementos){
     arbol->raiz = nuevoNodoC(elementos);
     generarArbol(arbol->raiz);
     return arbol;
+}
+
+struct cola_t* nuevaCola(void){
+    struct cola_t *cola = (struct cola_t*)malloc(sizeof(struct cola_t));
+    cola->elementos = 0;
+    cola->lista = nuevaLista();
+    
+    return cola;
+}
+
+void limpiarCola(struct cola_t* cola){
+    limpiarLista(cola->lista);
+    cola->elementos = 0;
+    free(cola->lista);
+    cola->lista = NULL;
+}
+
+void pushQ(struct cola_t* cola, const int dato){
+    insertarPrincipio(cola->lista, dato);
+    
+    cola->elementos++;
+}
+
+int frontQ(struct cola_t* cola){
+    struct nodo_t *aux = obtenerFinal(cola->lista->cabeza);
+    return aux->dato;
+}
+
+void eliminarFin(struct sll_t* lista){
+    struct nodo_t *aux = lista->cabeza;
+    while(aux->siguiente)
+        aux = aux->siguiente;
+        
+    free(aux->siguiente);
+    aux->siguiente = NULL;
+    lista->elementos--;
+}
+
+void popQ(struct cola_t* cola){
+    eliminarFin(cola->lista);
+    cola->elementos--;
 }
