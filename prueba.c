@@ -24,11 +24,8 @@ void mostrarArbol(struct nodoC_t *nodo){
 }
 
 int main(void){
-	ARBOLCOMB *A = nuevoArbol(2);
-	int i=0;
-
+	ARBOLCOMB *A = nuevoArbol(3);
 	rellenarArbol(A);
-	//mostrarArbol(A->raiz);
 
 	limpiarArbol(A);
 }
