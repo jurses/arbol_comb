@@ -31,7 +31,7 @@ struct nodo_t* obtenerFinal(struct nodo_t *nodo){
     struct nodo_t *aux = nodo;
     
     while(aux->siguiente)
-        aux = aux->siguiente;
+	aux = aux->siguiente;
     
     return aux;
 }
@@ -157,47 +157,6 @@ void insertarPrincipio(struct sll_t* lista, int dato){
     lista->elementos++;
 }
 
-struct nodoC_t* nuevoNodoC(int elementos){
-    struct nodoC_t *nodo = (struct nodoC_t*)malloc(sizeof(struct nodoC_t));
-    int i=0;
-    nodo->vNodos = (struct nodoC_t**)malloc(elementos * sizeof(struct nodoC_t*));
-    nodo->elementos = elementos;
-    
-    for(;i<elementos; i++)
-        nodo->vNodos[i] = NULL;
-        
-    return nodo;
-}
-
-void generarArbol(struct nodoC_t *nodo){
-    int i=0;
-    for(;i<nodo->elementos;i++){
-        nodo->vNodos[i] = nuevoNodoC(nodo->elementos - 1);
-        generarArbol(nodo->vNodos[i]);
-    }
-}
-
-void eliminarRarbol(struct nodoC_t *nodo){
-    int i=0;
-    for(;i<nodo->elementos; i++){
-        eliminarRarbol(nodo->vNodos[i]);
-        free(nodo->vNodos[i]);
-        nodo->vNodos[i] = NULL;
-    }
-}
-
-void limpiarArbol(struct arbolC_t *arbol){
-    eliminarRarbol(arbol->raiz);
-    free(arbol->raiz);
-    arbol->raiz = NULL;
-}
-
-struct arbolC_t* Arbol(int elementos){
-    struct arbolC_t *arbol = (struct arbolC_t*)malloc(sizeof(struct arbolC_t));
-    arbol->raiz = nuevoNodoC(elementos);
-    generarArbol(arbol->raiz);
-    return arbol;
-}
 
 struct cola_t* nuevaCola(void){
     struct cola_t *cola = (struct cola_t*)malloc(sizeof(struct cola_t));
@@ -221,14 +180,17 @@ void pushQ(struct cola_t* cola, const int dato){
 }
 
 int frontQ(struct cola_t* cola){
-    struct nodo_t *aux = obtenerFinal(cola->lista->cabeza);
-    return aux->dato;
+    if(cola->elementos >= 1){
+        struct nodo_t *aux = obtenerFinal(cola->lista->cabeza);
+        return aux->dato;
+    }
 }
 
 void eliminarFin(struct sll_t* lista){
     struct nodo_t *aux = lista->cabeza;
-    while(aux->siguiente)
-        aux = aux->siguiente;
+    if(aux->siguiente)
+	while(aux->siguiente->siguiente)
+	    aux = aux->siguiente;
         
     free(aux->siguiente);
     aux->siguiente = NULL;

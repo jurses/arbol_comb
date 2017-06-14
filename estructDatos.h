@@ -1,3 +1,6 @@
+#ifndef _ESTRUCT_DAT_
+#define _ESTRUCT_DAT_
+
 #include <stdlib.h>
 
 struct nodo_t{
@@ -32,12 +35,6 @@ struct sll_t{
 
 typedef struct sll_t SLISTA;
 
-struct arbolC_t{
-    struct nodoC_t *raiz;
-};
-
-typedef struct arbolC_t ARBOLCOMB;
-
 struct nodo_t* nuevoNodo(void);
 
 //PILA
@@ -66,7 +63,4 @@ void limpiarLista(struct sll_t*);
 void eliminaCabeza(struct sll_t*);
 void eliminaFin(struct sll_t*);
 
-struct nodoC_t* nuevoNodoC(int);
-void generarArbol(struct nodoC_t*);
-void limpiarArbol(struct arbolC_t*);
-struct arbolC_t* Arbol(int);
+#endif	// _ESTRUCT_DAT_
