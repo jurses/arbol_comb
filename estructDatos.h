@@ -8,12 +8,6 @@ struct nodo_t{
     int dato;
 };
 
-struct nodoC_t{
-    int elementos;
-    int dato;
-    struct nodoC_t** vNodos;    //aquí estaría los punteros a [A,B,C,D]
-};
-
 struct pila_t{
     struct sll_t* lista;
     unsigned int elementos;
@@ -62,5 +56,5 @@ void eliminar(struct sll_t*, int);
 void limpiarLista(struct sll_t*);
 void eliminaCabeza(struct sll_t*);
 void eliminaFin(struct sll_t*);
-
+void mostrarLista(struct sll_t*);
 #endif	// _ESTRUCT_DAT_

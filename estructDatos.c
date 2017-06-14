@@ -1,4 +1,5 @@
 #include "estructDatos.h"
+#include <stdio.h>
 
 struct nodo_t* nuevoNodo(void){ // esto sería como una especie de constructor
     struct nodo_t *nodo = (struct nodo_t*)malloc(sizeof(struct nodo_t));
@@ -201,3 +202,15 @@ void popQ(struct cola_t* cola){
     eliminarFin(cola->lista);
     cola->elementos--;
 }
+
+void mostrarLista(struct sll_t *lista){
+	struct nodo_t *aux = lista->cabeza;
+	if(lista->cabeza)
+		while(aux){
+			printf("%d - ", aux->dato);
+			aux = aux->siguiente;
+		}
+
+	printf("\n");
+}
+

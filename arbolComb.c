@@ -1,3 +1,4 @@
+#include "stdio.h"
 #include "arbolComb.h"
 
 struct nodoC_t* nuevoNodoC(int elementos){
@@ -35,7 +36,7 @@ void limpiarArbol(struct arbolC_t *arbol){
     arbol->raiz = NULL;
 }
 
-struct arbolC_t* Arbol(int elementos){
+struct arbolC_t* nuevoArbol(int elementos){
     struct arbolC_t *arbol = (struct arbolC_t*)malloc(sizeof(struct arbolC_t));
     arbol->raiz = nuevoNodoC(elementos);
     generarArbol(arbol->raiz);
@@ -45,19 +46,26 @@ struct arbolC_t* Arbol(int elementos){
 void rellenarArbol(struct arbolC_t* arbol){
     struct cola_t* cola = nuevaCola();
     int i=0;
-    for(;i<arbol->raiz->elementos; i++)
-	pushQ(cola, i);
-    rellenarArbol(arbol->raiz, cola);
+    for(;i<arbol->raiz->elementos+1; i++)
+		pushQ(cola, i);
+
+    rellenarArbolR(arbol->raiz, cola);
     limpiarCola(cola);
 }
 
-void rellenarArbol(struct nodoC_t *nodo, struct cola_t *cola){
+void rellenarArbolR(struct nodoC_t *nodo, struct cola_t *cola){
     int i;
-    for(i=0; i<raiz->elementos; i++){
+
+	mostrarLista(cola->lista);
+
+	printf("Damos el valor: %d\n", frontQ(cola));
 	nodo->dato = frontQ(cola);
 	popQ(cola);
-	rellenarArbol(nodo->Vnodos[i], cola);
-    }
 
-    pushQ(cola, dato);
+    for(i=0; i<nodo->elementos; i++)
+		rellenarArbolR(nodo->vNodos[i], cola);
+	
+	printf("Recogemos el valor: %d\n", nodo->dato);
+    pushQ(cola, nodo->dato);
+	mostrarLista(cola->lista);
 }
