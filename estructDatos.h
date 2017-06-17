@@ -10,14 +10,14 @@ struct nodo_t{
 
 struct pila_t{
     struct sll_t* lista;
-    unsigned int elementos;
+    const unsigned int * const elementos;
 };
 
 typedef struct pila_t PILA;
 
 struct cola_t{
     struct sll_t* lista;
-    unsigned int elementos;
+    const unsigned int * const elementos;
 };
 
 typedef struct cola_t COLA;

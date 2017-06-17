@@ -1,5 +1,6 @@
 #include "estructDatos.h"
 #include <stdio.h>
+#include <string.h>
 
 struct nodo_t* nuevoNodo(void){ // esto sería como una especie de constructor
     struct nodo_t *nodo = (struct nodo_t*)malloc(sizeof(struct nodo_t));
@@ -9,15 +10,16 @@ struct nodo_t* nuevoNodo(void){ // esto sería como una especie de constructor
 
 struct pila_t* nuevaPila(void){
     struct pila_t *p = (struct pila_t*)malloc(sizeof(struct pila_t));
-    p->lista = nuevaLista();
-    p->elementos = 0;
+    struct pila_t pS = {
+	.lista = nuevaLista(),
+	.elementos = &(pS.lista->elementos)
+    };
+    memcpy(p, &pS, sizeof(struct pila_t));
     return p;
 }
 
 void pushS(struct pila_t *p, const int dato){
     insertarPrincipio(p->lista, dato);
-    
-    p->elementos++;
 }
 
 struct nodo_t* obtenerFinal(struct nodo_t *nodo){
@@ -38,20 +40,16 @@ struct nodo_t* obtenerFinal(struct nodo_t *nodo){
 }
 
 void popS(struct pila_t *p){
-    if(p->elementos >= 1){
+    if(*(p->elementos) >= 1)
         eliminaCabeza(p->lista);
-        p->elementos--;
-    }
 }
 
 int frontS(struct pila_t *pila){
-    if(pila->elementos >= 1){
+    if(*(pila->elementos) >= 1)
         return pila->lista->cabeza->dato;
-    }
 }
 
 void limpiarPila(struct pila_t *pila){
-    pila->elementos = 0;
     limpiarLista(pila->lista);
     free(pila->lista);
     pila->lista = NULL;
@@ -161,27 +159,28 @@ void insertarPrincipio(struct sll_t* lista, int dato){
 
 struct cola_t* nuevaCola(void){
     struct cola_t *cola = (struct cola_t*)malloc(sizeof(struct cola_t));
-    cola->elementos = 0;
-    cola->lista = nuevaLista();
+    struct cola_t colaS = {
+	.lista = nuevaLista(),
+	.elementos = &(colaS.lista->elementos)
+    };
+
+    memcpy(cola, &colaS, sizeof(struct cola_t));
     
     return cola;
 }
 
 void limpiarCola(struct cola_t* cola){
     limpiarLista(cola->lista);
-    cola->elementos = 0;
     free(cola->lista);
     cola->lista = NULL;
 }
 
 void pushQ(struct cola_t* cola, const int dato){
     insertarPrincipio(cola->lista, dato);
-    
-    cola->elementos++;
 }
 
 int frontQ(struct cola_t* cola){
-    if(cola->elementos >= 1){
+    if(*(cola->elementos) >= 1){
         struct nodo_t *aux = obtenerFinal(cola->lista->cabeza);
         return aux->dato;
     }
@@ -189,18 +188,23 @@ int frontQ(struct cola_t* cola){
 
 void eliminarFin(struct sll_t* lista){
     struct nodo_t *aux = lista->cabeza;
-    if(aux->siguiente)
+    if(aux->siguiente){
 	while(aux->siguiente->siguiente)
 	    aux = aux->siguiente;
+	free(aux->siguiente);
+	aux->siguiente = NULL;
+	lista->elementos--;
+    }
+    else if(aux){
+	free(aux);
+	lista->cabeza = NULL;
+	lista->elementos--;
+    }
         
-    free(aux->siguiente);
-    aux->siguiente = NULL;
-    lista->elementos--;
 }
 
 void popQ(struct cola_t* cola){
     eliminarFin(cola->lista);
-    cola->elementos--;
 }
 
 void mostrarLista(struct sll_t *lista){
@@ -213,4 +217,3 @@ void mostrarLista(struct sll_t *lista){
 
 	printf("\n");
 }
-
