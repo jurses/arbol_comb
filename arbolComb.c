@@ -54,16 +54,13 @@ void rellenarArbol(struct arbolC_t* arbol){
 }
 
 void rellenarArbolR(struct nodoC_t *nodo, struct cola_t *cola){
-    int i;
+    nodo->dato = frontQ(cola);
+    popQ(cola);
+    printf("Añadimos: %d\n", nodo->dato);
 
-	printf("Damos el valor: %d\n", frontQ(cola));
-	popQ(cola);
+    for(int i=0; i<nodo->elementos; i++)
+	rellenarArbolR(nodo->vNodos[i], cola);
 
-    for(i=0; i<nodo->elementos; i++)
-		rellenarArbolR(nodo->vNodos[i], cola);
-	
-	printf("Recogemos el valor: %d\n", nodo->dato);
     pushQ(cola, nodo->dato);
-	printf("Tenemos %d elementos en la cola\n", *(cola->elementos));
-	mostrarLista(cola->lista);
+    printf("Recogemos: %d\n", nodo->dato);
 }
