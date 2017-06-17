@@ -67,6 +67,7 @@ void eliminaCabeza(struct sll_t *lista){
 struct sll_t* nuevaLista(void){
     struct sll_t *lista = (struct sll_t*)malloc(sizeof(struct sll_t));
     lista->elementos = 0;
+    lista->cabeza = NULL;
     return lista;
 }
 
@@ -211,7 +212,7 @@ void mostrarLista(struct sll_t *lista){
 	struct nodo_t *aux = lista->cabeza;
 	if(lista->cabeza)
 		while(aux){
-			printf("%d - ", aux->dato);
+			printf("(%d) - ", aux->dato);
 			aux = aux->siguiente;
 		}
 

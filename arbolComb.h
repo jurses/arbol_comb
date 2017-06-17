@@ -1,6 +1,7 @@
 #include "estructDatos.h"
 
 struct nodoC_t{
+    int cont;
     int elementos;
     int dato;
     struct nodoC_t** vNodos;    //aquí estaría los punteros a [A,B,C,D]

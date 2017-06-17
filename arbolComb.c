@@ -1,15 +1,14 @@
-#include "stdio.h"
 #include "arbolComb.h"
 
 struct nodoC_t* nuevoNodoC(int elementos){
     struct nodoC_t *nodo = (struct nodoC_t*)malloc(sizeof(struct nodoC_t));
-    int i=0;
     nodo->vNodos = (struct nodoC_t**)malloc(elementos * sizeof(struct nodoC_t*));
     nodo->elementos = elementos;
+    nodo->cont = 0;
     
-    for(;i<elementos; i++)
+    for(int i=0; i<elementos; i++)
         nodo->vNodos[i] = NULL;
-        
+    
     return nodo;
 }
 
@@ -45,9 +44,8 @@ struct arbolC_t* nuevoArbol(int elementos){
 
 void rellenarArbol(struct arbolC_t* arbol){
     struct cola_t* cola = nuevaCola();
-    int i=0;
-    for(;i<arbol->raiz->elementos+1; i++)
-		pushQ(cola, i);
+    for(int i=0; i<arbol->raiz->elementos+1; i++)
+	pushQ(cola, i);
 
     rellenarArbolR(arbol->raiz, cola);
     limpiarCola(cola);
@@ -56,11 +54,9 @@ void rellenarArbol(struct arbolC_t* arbol){
 void rellenarArbolR(struct nodoC_t *nodo, struct cola_t *cola){
     nodo->dato = frontQ(cola);
     popQ(cola);
-    printf("Añadimos: %d\n", nodo->dato);
 
     for(int i=0; i<nodo->elementos; i++)
 	rellenarArbolR(nodo->vNodos[i], cola);
 
     pushQ(cola, nodo->dato);
-    printf("Recogemos: %d\n", nodo->dato);
 }
