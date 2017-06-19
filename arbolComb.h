@@ -1,3 +1,6 @@
+#ifndef _ARBOL_C_
+#define _ARBOL_C_
+
 #include "estructDatos.h"
 
 struct nodoC_t{
@@ -19,3 +22,5 @@ struct arbolC_t* nuevoArbol(int);
 void eliminarRarbol(struct nodoC_t*);
 void rellenarArbol(struct arbolC_t*);
 void rellenarArbolR(struct nodoC_t*, struct cola_t*);
+
+#endif // _ARBOL_C_

@@ -1,11 +1,11 @@
-OBJS = main.o arbolComb.o estructDatos.o mates.o
+OBJS = main.o arbolComb.o estructDatos.o mates.o extrAleat.o
 
 all: combinacion.exe
 
 combinacion.exe: $(OBJS)
 	gcc -o combinacion.exe -g $(OBJS)
 
-main.o: main.c estructDatos.h mates.h arbolComb.h
+main.o: main.c estructDatos.h mates.h arbolComb.h extrAleat.h
 	gcc -c -g main.c
 
 mates.o: mates.c mates.h
@@ -16,6 +16,9 @@ arbolComb.o: arbolComb.c arbolComb.h estructDatos.h
 
 estructDatos.o: estructDatos.c estructDatos.h
 	gcc -c -g estructDatos.c
+
+extrAleat.o: extrAleat.c mates.h arbolComb.h estructDatos.h
+	gcc -c -g extrAleat.c
 
 clean:
 	rm $(OBJS)
